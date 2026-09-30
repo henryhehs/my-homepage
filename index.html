@@ -519,7 +519,7 @@
     padding-top: 14px;
   }
 
-  /* ---------- 展示型音乐播放器（不实际发声） ---------- */
+  /* ---------- 歌单展示（静态曲目列表 · 不提供在线播放） ---------- */
   .player {
     margin: 0 0 20px;
     background: var(--bg-soft);
@@ -539,8 +539,6 @@
     font-size: 20px;
     flex: none;
   }
-  .player.playing .player-disc { animation: spin 3.6s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
   .player-info { flex: 1; min-width: 0; }
   .player-song {
     font-size: 15px;
@@ -551,70 +549,30 @@
     text-overflow: ellipsis;
   }
   .player-artist { font-size: 12px; color: var(--ink-muted); }
-  .player-eq { display: flex; align-items: flex-end; gap: 3px; height: 18px; flex: none; }
-  .player-eq i {
-    display: block;
-    width: 3px;
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transform-origin: bottom;
-    animation: eq .9s ease-in-out infinite;
-    animation-play-state: paused;
+  .player-note {
+    margin: 14px 0 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-muted);
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
   }
-  .player.playing .player-eq i { animation-play-state: running; }
-  .player-eq i:nth-child(1) { animation-delay: 0s; }
-  .player-eq i:nth-child(2) { animation-delay: .22s; }
-  .player-eq i:nth-child(3) { animation-delay: .44s; }
-  .player-eq i:nth-child(4) { animation-delay: .11s; }
-  @keyframes eq {
-    0%, 100% { transform: scaleY(.3); }
-    50%      { transform: scaleY(1); }
-  }
-  .player-btn {
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    border: none;
-    background: var(--btn-bg);
-    color: var(--btn-fg);
-    font-size: 14px;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-    flex: none;
-    transition: transform .2s, background .25s;
-  }
-  .player-btn:hover { transform: scale(1.08); background: var(--accent); }
-  .player-bar {
-    height: 4px;
-    border-radius: 999px;
-    background: var(--line);
-    margin: 14px 0 6px;
-    overflow: hidden;
-  }
-  .player-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 999px;
-    background: var(--accent);
-  }
-  .player-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-muted); }
+  .player-note strong { color: var(--ink); font-weight: 600; }
   .player-list { list-style: none; margin: 14px 0 0; padding: 0; }
   .player-list li {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 8px 10px;
-    border-radius: 10px;
     font-size: 13px;
     color: var(--ink);
-    cursor: pointer;
-    transition: background .2s;
   }
-  .player-list li:hover { background: var(--surface); }
-  .player-list li.active { background: var(--accent-soft); color: var(--accent-deep); font-weight: 600; }
+  .player-list li + li { border-top: 1px dashed var(--line); }
   .player-list li .no { color: var(--ink-muted); font-size: 12px; width: 16px; flex: none; }
   .player-list li .nm { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-list li .ar { color: var(--ink-muted); font-size: 12px; flex: none; }
   .player-list li .du { color: var(--ink-muted); font-size: 12px; flex: none; }
 
   /* ---------- 小游戏区（贪吃蛇 / 乒乓球 / 五子棋） ---------- */
@@ -1265,7 +1223,7 @@
 
 <footer>
   <div class="wrap">
-    <div>© 2026 何浩诚 · 保留所有权利 · <span id="siteVersion">v1.2</span></div>
+    <div>© 2026 何浩诚 · 保留所有权利 · <span id="siteVersion">v1.3</span></div>
     <div class="footer-stat">本页访问 <span id="busuanzi_value_site_pv">—</span> 次</div>
     <div>既然选择了远方，便只顾风雨兼程。</div>
   </div>
@@ -1346,16 +1304,13 @@
     <ul class="modal-list" id="modalList"></ul>
     <div class="player" id="modalPlayer" hidden>
       <div class="player-head">
-        <div class="player-disc">🎵</div>
+        <div class="player-disc" aria-hidden="true">🎵</div>
         <div class="player-info">
-          <div class="player-song" id="playerSong">—</div>
-          <div class="player-artist" id="playerArtist">—</div>
+          <div class="player-song" id="playerSong">歌单展示</div>
+          <div class="player-artist" id="playerArtist">我常听的歌 · 仅展示曲目</div>
         </div>
-        <div class="player-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <button class="player-btn" id="playerBtn" type="button" aria-label="播放">▶</button>
       </div>
-      <div class="player-bar"><div class="player-fill" id="playerFill"></div></div>
-      <div class="player-time"><span id="playerCur">0:00</span><span id="playerDur">0:00</span></div>
+      <p class="player-note">这里只列出我平时常听的歌单，<strong>仅作展示，不提供在线播放</strong>。歌曲版权归原作者所有。</p>
       <ul class="player-list" id="playerList"></ul>
     </div>
     <div class="game" id="modalGame" hidden>
@@ -1873,21 +1828,11 @@
     var player = document.getElementById('modalPlayer');
     var gameArea = document.getElementById('modalGame');
     var transArea = document.getElementById('modalTrans');
-    var plSong = document.getElementById('playerSong');
-    var plArtist = document.getElementById('playerArtist');
-    var plBtn = document.getElementById('playerBtn');
-    var plFill = document.getElementById('playerFill');
-    var plCur = document.getElementById('playerCur');
-    var plDur = document.getElementById('playerDur');
     var plList = document.getElementById('playerList');
     var lastFocus = null;
 
-    /* ---- 展示型播放器（仅视觉演示，不实际发声） ---- */
+    /* ---- 歌单展示（静态曲目列表，不提供在线播放） ---- */
     var tracks = [];
-    var curIdx = 0;
-    var playing = false;
-    var elapsed = 0;
-    var timer = null;
 
     function fmt(s) {
       s = Math.max(0, Math.floor(s));
@@ -1897,66 +1842,15 @@
     }
 
     function renderList() {
+      if (!plList) return;
       plList.innerHTML = tracks.map(function (t, i) {
-        return '<li data-idx="' + i + '"' + (i === curIdx ? ' class="active"' : '') + '>' +
+        return '<li>' +
           '<span class="no">' + (i + 1) + '</span>' +
           '<span class="nm">' + t.name + '</span>' +
+          '<span class="ar">' + t.artist + '</span>' +
           '<span class="du">' + fmt(t.duration) + '</span>' +
           '</li>';
       }).join('');
-    }
-
-    function selectTrack(i, autoplay) {
-      if (!tracks[i]) return;
-      curIdx = i;
-      elapsed = 0;
-      plSong.textContent = tracks[i].name;
-      plArtist.textContent = tracks[i].artist;
-      plDur.textContent = fmt(tracks[i].duration);
-      plFill.style.width = '0%';
-      plCur.textContent = '0:00';
-      renderList();
-      if (autoplay) start();
-    }
-
-    function tick() {
-      var dur = tracks[curIdx] ? tracks[curIdx].duration : 0;
-      if (!dur) return;
-      elapsed += 0.25;
-      if (elapsed >= dur) {
-        if (tracks.length > 1) {
-          selectTrack((curIdx + 1) % tracks.length, true);
-        } else {
-          stop();
-          elapsed = 0;
-          plFill.style.width = '0%';
-          plCur.textContent = '0:00';
-        }
-        return;
-      }
-      plFill.style.width = (elapsed / dur * 100) + '%';
-      plCur.textContent = fmt(elapsed);
-    }
-
-    function start() {
-      if (!tracks.length) return;
-      playing = true;
-      player.classList.add('playing');
-      plBtn.textContent = '❚❚';
-      plBtn.setAttribute('aria-label', '暂停');
-      clearInterval(timer);
-      timer = setInterval(tick, 250);
-    }
-
-    function stop() {
-      playing = false;
-      if (player) player.classList.remove('playing');
-      if (plBtn) {
-        plBtn.textContent = '▶';
-        plBtn.setAttribute('aria-label', '播放');
-      }
-      clearInterval(timer);
-      timer = null;
     }
 
     function open(id) {
@@ -1968,12 +1862,11 @@
       elTags.innerHTML = d.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
       elList.innerHTML = d.highlights.map(function (h) { return '<li>' + h + '</li>'; }).join('');
       elNote.textContent = d.note;
-      stop();
       if (player) {
         if (d.music && d.music.length) {
           tracks = d.music;
           player.hidden = false;
-          selectTrack(0, false);
+          renderList();
         } else {
           tracks = [];
           player.hidden = true;
@@ -2006,7 +1899,6 @@
     }
 
     function close() {
-      stop();
       if (window.__games) window.__games.deactivate();
       if (window.__trans) window.__trans.deactivate();
       modal.classList.remove('open');
@@ -2024,21 +1916,6 @@
         }
       });
     });
-
-    if (plBtn) {
-      plBtn.addEventListener('click', function () {
-        if (playing) stop(); else start();
-      });
-    }
-    if (plList) {
-      plList.addEventListener('click', function (e) {
-        var node = e.target;
-        while (node && node !== plList && node.tagName !== 'LI') node = node.parentNode;
-        if (node && node.tagName === 'LI') {
-          selectTrack(parseInt(node.getAttribute('data-idx'), 10), true);
-        }
-      });
-    }
 
     modal.addEventListener('click', function (e) {
       if (e.target.hasAttribute('data-close')) close();
