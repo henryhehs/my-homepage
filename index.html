@@ -943,6 +943,119 @@
     .fb-fab { left: 16px; bottom: 16px; padding: 10px 14px; font-size: 12.5px; }
   }
 
+  /* ---------- 数字分身：真实模型 API 聊天 ---------- */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  #avatarHeroBtn { font-family: inherit; cursor: pointer; }
+  .avatar-fab {
+    position: fixed; right: 24px; bottom: 82px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px; border: 1px solid var(--accent); border-radius: 999px;
+    background: var(--btn-bg); color: var(--btn-fg); box-shadow: var(--shadow-lg);
+    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: transform .25s, background .25s;
+  }
+  .avatar-fab:hover { transform: translateY(-3px); background: var(--accent); }
+  .avatar-fab-mark {
+    display: grid; place-items: center; width: 22px; height: 22px;
+    border: 1px solid currentColor; border-radius: 50%; font-size: 10px; letter-spacing: .02em;
+  }
+  .cover-avatar { background: linear-gradient(135deg, #bdcec2 0%, #e7efe8 58%, #d7e3da 100%); }
+  html[data-theme="dark"] .cover-avatar { background: linear-gradient(135deg, #293a30 0%, #202923 100%); }
+  .avatar-card { cursor: pointer; }
+  .avatar-cover-mark {
+    width: 74px; height: 74px; display: grid; place-items: center;
+    border: 1px solid rgba(79,100,89,.28); border-radius: 24px;
+    background: rgba(255,255,255,.45); color: #4f6459;
+    font-size: 28px; font-weight: 700; letter-spacing: .04em;
+    box-shadow: 0 10px 30px rgba(79,100,89,.10);
+  }
+  html[data-theme="dark"] .avatar-cover-mark { background: rgba(255,255,255,.04); color: #b4cbba; }
+  .avatar-modal { z-index: 90; }
+  .avatar-box {
+    width: min(640px, 100%); height: min(720px, 88vh); padding: 28px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .avatar-profile { display: flex; align-items: center; gap: 13px; padding-right: 42px; }
+  .avatar-profile-mark {
+    flex: 0 0 auto; width: 48px; height: 48px; display: grid; place-items: center;
+    border-radius: 16px; background: var(--accent-soft); color: var(--accent-deep);
+    border: 1px solid var(--line); font-size: 20px; font-weight: 700;
+  }
+  .avatar-box h3 { margin: 3px 0 3px; padding: 0; font-size: 21px; }
+  .avatar-live { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--ink-muted); font-size: 11.5px; }
+  .avatar-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #6f9a79; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .avatar-disclaimer {
+    margin: 16px 0 12px; padding: 9px 12px; border-radius: 10px;
+    background: var(--accent-soft); color: var(--accent-deep); font-size: 12px; line-height: 1.65;
+  }
+  .avatar-messages {
+    flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+    display: flex; flex-direction: column; gap: 10px; padding: 14px;
+    border: 1px solid var(--line); border-radius: 14px; background: var(--bg-soft);
+    scroll-behavior: smooth;
+  }
+  .avatar-message {
+    max-width: 86%; padding: 10px 13px; border-radius: 14px;
+    font-size: 13.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+  }
+  .avatar-message.assistant {
+    align-self: flex-start; background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-bottom-left-radius: 4px;
+  }
+  .avatar-message.user {
+    align-self: flex-end; background: var(--btn-bg); color: var(--btn-fg);
+    border-bottom-right-radius: 4px;
+  }
+  .avatar-message.pending { color: var(--ink-muted); }
+  .avatar-message.error { color: #a64c45; border-color: rgba(166,76,69,.3); }
+  html[data-theme="dark"] .avatar-message.error { color: #e0918a; }
+  .avatar-suggestions { display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0; }
+  .avatar-suggestions[hidden] { display: none; }
+  .avatar-suggestions button {
+    padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); color: var(--accent-deep); font-family: inherit;
+    font-size: 11.5px; cursor: pointer; transition: border-color .2s, background .2s;
+  }
+  .avatar-suggestions button:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+  .avatar-suggestions button:disabled { opacity: .55; cursor: not-allowed; }
+  .avatar-composer { display: flex; align-items: flex-end; gap: 9px; }
+  .avatar-composer textarea {
+    flex: 1; min-width: 0; min-height: 46px; max-height: 120px; resize: none;
+    padding: 11px 13px; border: 1px solid var(--line); border-radius: 13px;
+    background: var(--bg-soft); color: var(--ink); font-family: inherit;
+    font-size: 13.5px; line-height: 1.6; outline: none;
+  }
+  .avatar-composer textarea:focus { border-color: var(--accent); background: var(--surface); }
+  .avatar-send {
+    flex: 0 0 auto; min-width: 70px; min-height: 46px; padding: 10px 17px;
+    border: 0; border-radius: 13px; background: var(--btn-bg); color: var(--btn-fg);
+    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .avatar-send:disabled { opacity: .55; cursor: not-allowed; }
+  .avatar-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; }
+  .avatar-status { color: var(--ink-muted); font-size: 10.5px; }
+  .avatar-clear {
+    padding: 2px 0; border: 0; background: transparent; color: var(--ink-muted);
+    font-family: inherit; font-size: 11px; cursor: pointer;
+  }
+  .avatar-clear:hover { color: var(--accent-deep); }
+  @media (max-width: 600px) {
+    .avatar-fab { right: 16px; bottom: 70px; padding: 10px 14px; font-size: 12.5px; }
+    .modal.avatar-modal { padding: 0; }
+    .modal-box.avatar-box {
+      width: 100%; height: 100vh; height: 100dvh; max-height: none;
+      padding: 20px 16px 16px; border: 0; border-radius: 0;
+    }
+    .avatar-disclaimer { margin-top: 12px; }
+    .avatar-messages { padding: 11px; }
+    .avatar-message { max-width: 91%; font-size: 13px; }
+    .avatar-suggestions { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+    .avatar-suggestions button { flex: 0 0 auto; }
+  }
+
   /* ---------- 滚动渐入动效 ---------- */
   .reveal {
     opacity: 0;
@@ -1120,6 +1233,7 @@
         </div>
         <div class="btn-group" style="display:flex;gap:14px;flex-wrap:wrap;">
           <a class="btn" href="#projects">查看作品</a>
+          <button class="btn ghost" id="avatarHeroBtn" type="button">和数字分身聊聊</button>
           <a class="btn ghost" href="#contact">联系我</a>
         </div>
       </div>
@@ -1143,6 +1257,15 @@
         <p>这里挑选了几件有代表性的作品，从创意到落地均有完整参与。</p>
       </div>
       <div class="projects-grid">
+        <article class="card reveal avatar-card" id="avatarCard" tabindex="0" role="button" aria-label="打开何浩诚的数字分身">
+          <div class="card-cover cover-avatar"><div class="avatar-cover-mark" aria-hidden="true">AI</div></div>
+          <div class="card-body">
+            <div class="kind">数字分身 · 实时大模型</div>
+            <h3>何浩诚的数字分身</h3>
+            <p>通过 Supabase Edge Function 真实调用智谱 GLM，根据主页公开资料回答学习、技能、项目与经历问题；不知道的信息会直说。</p>
+            <div class="card-links"><span class="card-more">开始对话 →</span></div>
+          </div>
+        </article>
         <article class="card reveal" data-project="1" tabindex="0" role="button" aria-label="打开 AI 翻译小工具">
           <div class="card-cover cover-1">🌐</div>
           <div class="card-body">
@@ -1223,7 +1346,7 @@
 
 <footer>
   <div class="wrap">
-    <div>© 2026 何浩诚 · 保留所有权利 · <span id="siteVersion">v1.3</span></div>
+    <div>© 2026 何浩诚 · 保留所有权利 · <span id="siteVersion">v2.0</span></div>
     <div class="footer-stat">本页访问 <span id="busuanzi_value_site_pv">—</span> 次</div>
     <div>既然选择了远方，便只顾风雨兼程。</div>
   </div>
@@ -1233,6 +1356,9 @@
 <button class="to-top" id="toTop" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
 <!-- 复制提示 -->
 <div class="toast" id="toast">邮箱已复制</div>
+
+<!-- 数字分身入口（右下角，回到顶部按钮上方） -->
+<button class="avatar-fab" id="avatarFab" type="button" aria-label="和何浩诚的数字分身对话"><span class="avatar-fab-mark" aria-hidden="true">AI</span>问数字分身</button>
 
 <!-- F6: 反馈入口（左下角，随时可提意见） -->
 <button class="fb-fab" id="fbFab" type="button" aria-label="给站长提反馈"><span class="dot" aria-hidden="true"></span>提点反馈</button>
@@ -1288,6 +1414,40 @@
       <h4>收到了，谢谢你</h4>
       <p id="fbDoneText">你的反馈我已经存下了，会认真看的。</p>
       <button class="fb-submit" id="fbAgain" type="button">再写一条</button>
+    </div>
+  </div>
+</div>
+
+<!-- 数字分身聊天弹窗 -->
+<div class="modal avatar-modal" id="avatarModal" aria-hidden="true">
+  <div class="modal-mask" data-avatar-close></div>
+  <div class="modal-box avatar-box" role="dialog" aria-modal="true" aria-labelledby="avatarTitle">
+    <button class="modal-close" type="button" data-avatar-close aria-label="关闭数字分身">×</button>
+    <div class="avatar-profile">
+      <div class="avatar-profile-mark" aria-hidden="true">H</div>
+      <div>
+        <div class="modal-kind">AI Digital Twin</div>
+        <h3 id="avatarTitle">何浩诚的数字分身</h3>
+        <p class="avatar-live"><span class="avatar-live-dot" aria-hidden="true"></span>智谱 GLM · glm-4-flash · 实时 API</p>
+      </div>
+    </div>
+    <p class="avatar-disclaimer">我是 AI 数字分身，不是浩诚本人。回答依据主页公开资料生成；资料中没有的信息会明确说不知道。</p>
+    <div class="avatar-messages" id="avatarMessages" role="log" aria-live="polite" aria-relevant="additions" aria-busy="false">
+      <div class="avatar-message assistant">你好，我是何浩诚的 AI 数字分身。我的回答由智谱 GLM 实时生成，依据是主页公开资料。你可以问我的学习、技能、项目或联系方式。</div>
+    </div>
+    <div class="avatar-suggestions" id="avatarSuggestions">
+      <button type="button" data-avatar-question="你正在学习哪些技术？">你正在学习哪些技术？</button>
+      <button type="button" data-avatar-question="介绍一下你的小游戏项目">介绍一下小游戏项目</button>
+      <button type="button" data-avatar-question="你的学习目标是什么？">你的学习目标是什么？</button>
+    </div>
+    <form class="avatar-composer" id="avatarForm">
+      <label class="sr-only" for="avatarInput">向何浩诚的数字分身提问</label>
+      <textarea id="avatarInput" rows="1" maxlength="500" placeholder="问问我的学习、技能或项目…" required></textarea>
+      <button class="avatar-send" id="avatarSend" type="submit">发送</button>
+    </form>
+    <div class="avatar-footer">
+      <span class="avatar-status" id="avatarStatus">Enter 发送 · Shift+Enter 换行</span>
+      <button class="avatar-clear" id="avatarClear" type="button">清空对话</button>
     </div>
   </div>
 </div>
@@ -4854,6 +5014,180 @@
       });
     }
     if (noteEl) noteEl.textContent = configured() ? '不用登录，也不会公开' : '本地演示模式：尚未接后端，先存在本机';
+  })();
+
+  /* ---------- 期末：数字分身（Supabase Edge Function -> 智谱 GLM） ---------- */
+  (function () {
+    var AVATAR_CONFIG = {
+      url: 'https://mwklcdfgphgdcnbzrdpq.supabase.co',
+      anonKey: 'sb_publishable_EG_aI4PIlZB8MvBdviULjw_SLGpjR9o'
+    };
+    var fab = document.getElementById('avatarFab');
+    var heroBtn = document.getElementById('avatarHeroBtn');
+    var card = document.getElementById('avatarCard');
+    var modal = document.getElementById('avatarModal');
+    var form = document.getElementById('avatarForm');
+    var input = document.getElementById('avatarInput');
+    var messages = document.getElementById('avatarMessages');
+    var sendBtn = document.getElementById('avatarSend');
+    var clearBtn = document.getElementById('avatarClear');
+    var statusEl = document.getElementById('avatarStatus');
+    var suggestions = document.getElementById('avatarSuggestions');
+    if (!fab || !modal || !form || !input || !messages || !sendBtn) return;
+
+    var GREETING = '你好，我是何浩诚的 AI 数字分身。我的回答由智谱 GLM 实时生成，依据是主页公开资料。你可以问我的学习、技能、项目或联系方式。';
+    var history = [];
+    var busy = false;
+    var lastFocus = null;
+
+    function endpoint() {
+      return AVATAR_CONFIG.url.replace(/\/+$/, '') + '/functions/v1/digital-avatar';
+    }
+    function scrollToBottom() {
+      requestAnimationFrame(function () { messages.scrollTop = messages.scrollHeight; });
+    }
+    function appendMessage(role, text, extra) {
+      var bubble = document.createElement('div');
+      bubble.className = 'avatar-message ' + role + (extra ? ' ' + extra : '');
+      bubble.textContent = text;
+      messages.appendChild(bubble);
+      scrollToBottom();
+      return bubble;
+    }
+    function autoGrow() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    }
+    function setBusy(value) {
+      busy = value;
+      sendBtn.disabled = value;
+      clearBtn.disabled = value;
+      sendBtn.textContent = value ? '等待…' : '发送';
+      messages.setAttribute('aria-busy', value ? 'true' : 'false');
+      statusEl.textContent = value ? '正在调用智谱 GLM API…' : 'Enter 发送 · Shift+Enter 换行';
+      var buttons = suggestions.querySelectorAll('button');
+      Array.prototype.forEach.call(buttons, function (button) { button.disabled = value; });
+    }
+    function openModal() {
+      lastFocus = document.activeElement;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      scrollToBottom();
+      setTimeout(function () { input.focus(); }, 60);
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      if (!document.querySelector('.modal.open')) document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function failMessage(error) {
+      var status = error && error.status;
+      if (error && error.name === 'AbortError') return '这次回答等待超时了，请稍后再试。你的问题还保留在对话里。';
+      if (status === 404) return '数字分身后端还没有部署完成，暂时不能回答。请稍后再试，或通过主页邮箱联系浩诚本人。';
+      if (status === 401 || status === 403) return '数字分身的后台授权或来源校验未通过，请联系站点所有者检查配置。';
+      if (status === 429) return '提问有些频繁，请一分钟后再试。';
+      if (status === 503) return '数字分身正在配置模型服务，暂时不能回答。请稍后再试。';
+      if (status === 504) return '模型响应超时，请稍后再试。';
+      return '这次没有连接成功，请检查网络后再试。数字分身不会用固定答案冒充模型回答。';
+    }
+    function requestReply(message) {
+      var controller = new AbortController();
+      var timer = setTimeout(function () { controller.abort(); }, 50000);
+      return fetch(endpoint(), {
+        method: 'POST',
+        headers: {
+          'apikey': AVATAR_CONFIG.anonKey,
+          'Authorization': 'Bearer ' + AVATAR_CONFIG.anonKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message, history: history.slice(-8) }),
+        signal: controller.signal
+      }).then(function (response) {
+        return response.json().catch(function () { return {}; }).then(function (data) {
+          if (!response.ok) {
+            var error = new Error(data.error || ('HTTP ' + response.status));
+            error.status = response.status;
+            throw error;
+          }
+          if (!data || typeof data.reply !== 'string' || !data.reply.trim()) {
+            throw new Error('模型返回了空回答');
+          }
+          return data.reply.trim();
+        });
+      }).finally(function () { clearTimeout(timer); });
+    }
+    function sendQuestion(text) {
+      var message = String(text || '').trim();
+      if (busy || !message) return;
+      if (message.length > 500) {
+        appendMessage('assistant', '单条问题最多 500 字，请缩短后再试。', 'error');
+        return;
+      }
+      appendMessage('user', message);
+      input.value = '';
+      autoGrow();
+      suggestions.hidden = true;
+      setBusy(true);
+      var pending = appendMessage('assistant', '正在思考，等待模型实时回答…', 'pending');
+      requestReply(message).then(function (reply) {
+        pending.remove();
+        appendMessage('assistant', reply);
+        history.push({ role: 'user', content: message });
+        history.push({ role: 'assistant', content: reply });
+        history = history.slice(-8);
+      }).catch(function (error) {
+        pending.remove();
+        appendMessage('assistant', failMessage(error), 'error');
+      }).finally(function () {
+        setBusy(false);
+        input.focus();
+      });
+    }
+
+    fab.addEventListener('click', openModal);
+    if (heroBtn) heroBtn.addEventListener('click', openModal);
+    if (card) {
+      card.addEventListener('click', openModal);
+      card.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openModal();
+        }
+      });
+    }
+    modal.addEventListener('click', function (event) {
+      if (event.target.hasAttribute('data-avatar-close')) closeModal();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      sendQuestion(input.value);
+    });
+    input.addEventListener('input', autoGrow);
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+        event.preventDefault();
+        sendQuestion(input.value);
+      }
+    });
+    suggestions.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-avatar-question]');
+      if (button) sendQuestion(button.getAttribute('data-avatar-question'));
+    });
+    clearBtn.addEventListener('click', function () {
+      if (busy) return;
+      history = [];
+      messages.innerHTML = '';
+      appendMessage('assistant', GREETING);
+      suggestions.hidden = false;
+      input.value = '';
+      autoGrow();
+      input.focus();
+    });
   })();
 </script>
 </body>
